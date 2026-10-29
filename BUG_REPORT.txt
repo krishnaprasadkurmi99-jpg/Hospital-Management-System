@@ -1,0 +1,32 @@
+MediVerse Website Bug Report
+============================
+
+Bug: Mobile navigation menu did not open
+
+Symptoms:
+- On mobile screen widths, the menu button was visible.
+- Clicking the menu button did nothing.
+- The sidebar remained hidden off-screen at left: -250px.
+- The menu button had no accessible name or expanded-state information.
+
+Root cause:
+- The mobile menu button had no onClick handler.
+- The sidebar had no React state or open CSS class to control its position.
+- The button did not have an aria-label or aria-expanded attribute.
+
+Fix applied:
+- Added sidebarOpen state in client/src/main.tsx.
+- Added a click handler to toggle the sidebar.
+- Added aria-label="Open navigation" and aria-expanded to the menu button.
+- Added automatic sidebar close after selecting a navigation page.
+- Added the sidebar-open CSS class and a short left-position transition in client/src/styles.css.
+
+Verification:
+- At a 390px mobile viewport, the sidebar changed from left: -250px to left: 0px after clicking the menu button.
+- The button reported aria-expanded="true" while the menu was open.
+- Client production build passed with:
+  npm.cmd run build --workspace client
+
+Environment note:
+- The API process starts, but PostgreSQL must be running at localhost:5432 for live records.
+- When PostgreSQL is unavailable, the website falls back to synthetic demo data as designed.
